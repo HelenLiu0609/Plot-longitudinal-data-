@@ -2,17 +2,13 @@
 title: "plot-longitudinal-data"
 author: "HelenLiu"
 date: "8/1/2021"
-output: html_document
+output:
+  html_document: default
 ---
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 <<<<<<< HEAD
-=======
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
->>>>>>> 3c94464d616d90e8358743b3891b328b9061f241
 ```{r read.csv}
 library(readr)
 example_track_ <- read_csv("~/Desktop/Book2.csv")
@@ -91,7 +87,6 @@ library(dplyr)
 library(stringr)
 #prepare data 
 paired_data_2 <- example_track_[,c(1,4,11,16)] %>% na.omit("core affect_1")
-View(paired_data_2)
 #create vector of variable name "Timeline"
 x_var_list <- c("core affect_1", "core affect_2","core affect_3")
 #create long data set 
@@ -101,7 +96,6 @@ pivot_longer(cols = all_of(x_var_list), names_to = "time", values_to = "Mood") %
   time = str_extract(time, "\\d+"),
 time = factor(as.numeric(time))
 )
-View(data_long)
 # Create longitudinal plot for vector x
 plot_trajectories(data = paired_data_2,
                   id_var = "Date", 
@@ -111,8 +105,9 @@ plot_trajectories(data = paired_data_2,
                   title_n = FALSE)
 ```
 ```{r plot logitudinal data using "ggplot2"}
-View(Book2)
+View(example_track_)
 #read in data set
+library(tidyverse)
 moodlevel <- example_track_[,c(1,4,11,16)] %>% na.omit("core affect_1")
 moodlevel
 longformat_moodlevel <- moodlevel %>% gather(key = "timeline", value = "mood"  ,"core affect_1", "core affect_2", "core affect_3")
@@ -141,8 +136,6 @@ geom_line(linetype="dashed",color = "grey")+
 p_mean
 ```
 ```{r correlation analysis}
-#
-
 library("ggpubr")
 #sleep quality & mood in the morning 
 # visualize using scatter
