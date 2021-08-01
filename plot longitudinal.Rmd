@@ -3,26 +3,16 @@ title: "plot-longitudinal-data"
 author: "HelenLiu"
 date: "8/1/2021"
 output: html_document
-knit: (function(input_file, encoding) {
-  out_dir <- 'docs';
-  rmarkdown::render(input_file,
- encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r pressure, echo=FALSE}
-plot(pressure)```{r load example data}
+```{r read.csv}
 library(readr)
-example_track_ <- read_csv("Book2.csv")
+example_track_ <- read_csv("~/Desktop/Book2.csv")
 sapply(example_track_, class)
 View(example_track_)
 ```
@@ -155,12 +145,6 @@ ggscatter(example_track_, x = "sleep quality",
           cor.coef = TRUE, cor.method = "pearson",
           xlab = "Sleep Quality", ylab = "Mood in the morning")
 #sleep quality & mood in the morning 
-```
-```{r}
-
-```
-
-
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
