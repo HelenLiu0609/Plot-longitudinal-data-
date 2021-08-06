@@ -1,0 +1,15 @@
+Date ,sleep quality ,Baseline (9am),core affect_1,Appraisal_1,emotion meta-experience_1,caffeine_intake_quantitization ,sugar_intake_time_1,"Possible confunding variable_chat,..",Sugar_intake_ 1_quantization,core affect_2,Appraisal_2,emotion meta-experience_2,sugar_intake_time_2,Sugar_intake_ 2_quantization,core affect_3,Appraisal_3,emotion meta-experience_3,possible confunding
+0,3,,1.8,3.2,0.49,60,11am,no,16,2,3.4,0.6,5pm,20.5,2.9,3,0.78,having a chat
+1,5,,2.6,3.2,0.7,60,11am,take a shower ,25,2.9,2.8,0.67,4:45pm,22.3,3.1,3.1,0.69,not reply 
+2,5,,2.3,2.7,0.61,60,11am,no,16,2.8,2.5,0.7,4:40pm,20,3.6,2.9,0.63,having a chat
+3,4,,2.7,3,0.64,0,11am,remaining alcohol level ,10,3.1,2.9,0.74,3pm,10,2.1,2.7,0.63,no
+4,5,,3,3,0.62,0,11am,take a shower ,10,4,3.2,0.6,4pm,15,3,2.9,0.69,music festival 
+5,3,,3.2,2.6,0.67,60,11am,no,15,3.7,3.3,0.64,5pm,10,3.8,2.9,0.61,no
+6,3,,2.3,2.6,0.62,60,11am,no,15,3.2,2.7,0.71,5pm,18,3.4,3,0.65,no
+7,4,,2.6,2.3,0.67,60,11am,no,15,3.7,2.5,0.65,4pm,18,3.6,2.6,0.62,no
+8,4,,3.1,2.5,0.66,60,11am,no,15,3.4,2.7,0.65,4pm,12,4.1,3.4,0.59,"having a chat,covid"
+9,5,,3.8,2.6,0.6,60,11am,sleep too much?,15,4,2.3,0.55,4pm,12,3.6,2.4,0.55,vaccine
+10,5,,3.8,2.6,0.55,60,11am,new mission,15,4.1,3.1,0.6,4pm,12,4.1,3.3,0.58,work
+11,4,,4.1,2.8,0.58,60,11am,no,15,4.2,2.9,0.52,4pm,15,3.7,2.3,0.65,no
+12,5,,3.8,2.7,0.58,60,11am,no,15,4.1,2.9,0.68,4pm,15,4.1,2.4,0.68,no
+13,4,,2.7,2.4,0.68,60,11am,no,15,3.7,2.2,0.63,4pm,15,3.7,2.4,0.68,no
