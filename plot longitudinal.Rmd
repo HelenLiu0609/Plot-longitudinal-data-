@@ -3,6 +3,7 @@ title: "plot-longitudinal-data"
 author: "HelenLiu"
 date: "8/1/2021"
 output:
+  pdf_document: default
   html_document: default
 ---
 ## R Markdown
@@ -18,36 +19,52 @@ View(example_track_)
 ```{r explore & Summary statistics}
 library(tidyr)
 library(rstatix)
-paired_data <- example_track_[,c(1,4,11,16)] %>% na.omit("core affect_1")
+paired_data <- example_track_[, c(1, 4, 11, 16)] %>%
+    na.omit("core affect_1")
 View(paired_data)
-# transform data into long data 
-longformat_paired_data <- paired_data %>% gather(key = "timeline", value = "mood"  ,"core affect_1", "core affect_2", "core affect_3")
+# transform data into long format data
+longformat_paired_data <- paired_data %>%
+    gather(key = "timeline", 
+           value = "mood", 
+           "core affect_1", 
+           "core affect_2",
+           "core affect_3"
+           )
 View(longformat_paired_data)
-#mean 
+# mean
 library(dplyr)
 group_by(longformat_paired_data, timeline) %>%
-  summarise(
-    count = n(),
-    mean = mean(mood, na.rm = TRUE),
-    sd = sd(mood, na.rm = TRUE)
-  )
-#boxplot
+    summarise(count = n(), 
+              mean = mean(mood, na.rm = TRUE), 
+              sd = sd(mood,na.rm = TRUE)
+        )
+# box-plot
 library(ggplot2)
 library(ggpubr)
-ggboxplot(longformat_paired_data, x = "timeline", y = "mood", 
-          color = "timeline", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("core affect_1", "core affect_2", "core affect_3"),
-          ylab = "Mood", xlab = "Timeline")
-### Mean plots
-# Plot weight by group
-# Add error bars: mean_se
-# (other values include: mean_sd, mean_ci, median_iqr, ....)
-#line plot
+ggboxplot(
+    longformat_paired_data, 
+    x = "timeline", y = "mood", 
+    color = "timeline",
+    palette = c("#00AFBB",
+                "#E7B800", 
+                "#FC4E07"),
+    order = c("core affect_1", 
+              "core affect_2", 
+              "core affect_3"
+              ),
+    ylab = "Mood", xlab = "Timeline"
+)
+### Mean plots Plot weight by group Add error bars: mean_se (other
+### values include: mean_sd, mean_ci, median_iqr, ....) line plot
 library("ggpubr")
-me <- ggline(longformat_paired_data, x = "timeline", y = "mood", 
-       add = c("mean_se", "jitter"), 
-       order = c("core affect_1", "core affect_2", "core affect_3"),
-       ylab = "Mood", xlab = "Timeline")
+me <- ggline(
+    longformat_paired_data, 
+    x = "timeline", y = "mood", add = c("mean_se", "jitter"),
+    order = c("core affect_1", 
+              "core affect_2", 
+              "core affect_3"),
+    ylab = "Mood", xlab = "Timeline"
+)
 me
 ```
 ```{r one-way repeated Anova}
@@ -55,7 +72,8 @@ library(dplyr)
 library(modeldata)
 str(longformat_paired_data)
 # one-way repeated Anova
-res.aov <- anova_test(data = longformat_paired_data, dv = mood, wid = Date, within = timeline)
+res.aov <- anova_test(data = longformat_paired_data, 
+                      dv = mood, wid = Date, within = timeline)
 get_anova_table(res.aov)
 # pairwise comparisons
 pwc <- longformat_paired_data %>%
@@ -65,12 +83,19 @@ pwc <- longformat_paired_data %>%
     )
 pwc
 #Effect Size  
-longformat_paired_data %>% cohens_d(mood ~ timeline, paired = TRUE)
+longformat_paired_data %>% 
+  cohens_d(mood ~ timeline, 
+           paired = TRUE)
 # Visualization: box plots with p-values
-pwc <- pwc %>% add_xy_position(x = "timeline")
-bp<- ggboxplot(longformat_paired_data, x = "timeline", y = "mood", 
-          color = "timeline", palette = "jco",
-          order = c("core affect_1", "core affect_2", "core affect_3"),
+pwc <- pwc %>% 
+  add_xy_position(x = "timeline")
+bp<- ggboxplot(longformat_paired_data, 
+               x = "timeline", y = "mood", 
+          color = "timeline", 
+          palette = "jco",
+          order = c("core affect_1", 
+                    "core affect_2", 
+                    "core affect_3"),
           ylab = "Mood", xlab = "Timeline")
 bp +
   stat_pvalue_manual(pwc) +
@@ -85,17 +110,26 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(stringr)
-#prepare data 
-paired_data_2 <- example_track_[,c(1,4,11,16)] %>% na.omit("core affect_1")
-#create vector of variable name "Timeline"
-x_var_list <- c("core affect_1", "core affect_2","core affect_3")
-#create long data set 
-data_long <- paired_data_2 %>% select("Date", all_of(x_var_list)) %>% 
-#pivot data long
-pivot_longer(cols = all_of(x_var_list), names_to = "time", values_to = "Mood") %>% mutate(
-  time = str_extract(time, "\\d+"),
-time = factor(as.numeric(time))
-)
+# prepare data
+paired_data_2 <- example_track_[, c(1, 4, 11, 16)] %>%
+    na.omit("core affect_1")
+# create vector of variable name 'Timeline'
+x_var_list <- c("core affect_1", 
+                "core affect_2", 
+                "core affect_3")
+# create long data set
+data_long <- paired_data_2 %>%
+    select("Date", all_of(x_var_list)) %>%
+    # pivot data long
+pivot_longer(
+    cols = all_of(x_var_list),
+    names_to = "time", 
+    values_to = "Mood"
+) %>%
+    mutate(
+        time = str_extract(time, "\\d+"),
+        time = factor(as.numeric(time))
+    )
 # Create longitudinal plot for vector x
 plot_trajectories(data = paired_data_2,
                   id_var = "Date", 
@@ -108,9 +142,17 @@ plot_trajectories(data = paired_data_2,
 View(example_track_)
 #read in data set
 library(tidyverse)
-moodlevel <- example_track_[,c(1,4,11,16)] %>% na.omit("core affect_1")
+moodlevel <- example_track_[, c(1, 4, 11, 16)] %>%
+    na.omit("core affect_1")
 moodlevel
-longformat_moodlevel <- moodlevel %>% gather(key = "timeline", value = "mood"  ,"core affect_1", "core affect_2", "core affect_3")
+longformat_moodlevel <- moodlevel %>%
+    gather(
+        key = "timeline", 
+        value = "mood", 
+        "core affect_1", 
+        "core affect_2",
+        "core affect_3"
+    )
 View(longformat_moodlevel)
 ## change Date to factor variables
 library(forcats)
@@ -118,21 +160,29 @@ longformat_moodlevel$"Date" <-  as_factor(longformat_moodlevel$"Date")
 longformat_moodlevel 
 str(longformat_moodlevel)  
 # line plot ggplot2
-p_line <- ggplot(data=longformat_moodlevel, aes(x=timeline, y=mood, group=Date))+
+p_line <- ggplot(data=longformat_moodlevel, 
+                 aes(x=timeline, y=mood, group=Date))+
   geom_line()+
   geom_point()
 p_line
 # add color and title 
-p_color<- p_line +
-geom_line(aes(color=Date))+
-  geom_point(aes(color=Date))+
- ggtitle("Mood change by timeline")
+p_color <- p_line + geom_line(aes(color = Date)) +
+    geom_point(aes(color = Date)) +
+    ggtitle("Mood change by timeline")
 p_color
 # add a line for mean 
-p_mean <- ggplot(data=longformat_moodlevel, aes(x=timeline, y=mood, group=Date))+
-geom_line(linetype="dashed",color = "grey")+
-  stat_summary(aes(y = mood,group=1), fun.y=mean, colour="red",size=1.2,geom="line",group=1)+
- ggtitle("Mood change by timeline")
+p_mean <- ggplot(
+    data = longformat_moodlevel, aes(x = timeline, 
+                                     y = mood, 
+                                     group = Date)
+) +
+    geom_line(linetype = "dashed", 
+              color = "grey") +
+    stat_summary(
+        aes(y = mood, group = 1),
+        fun.y = mean, colour = "red", size = 1.2, geom = "line", group = 1
+    ) +
+    ggtitle("Mood change by timeline")
 p_mean
 ```
 ```{r correlation analysis}
@@ -141,10 +191,18 @@ library("ggpubr")
 # visualize using scatter
 ggscatter(example_track_, x = "sleep quality", 
           y = "core affect_1", 
-          add = "reg.line", conf.int = TRUE, 
-          cor.coef = TRUE, cor.method = "pearson",
-          xlab = "Sleep Quality", ylab = "Mood in the morning")
+          add = "reg.line", 
+          conf.int = TRUE, 
+          cor.coef = TRUE, 
+          cor.method = "pearson",
+          xlab = "Sleep Quality", ylab = "Mood in the morning"
+          )
 #sleep quality & mood in the morning 
+```
+```{r formatting document}
+library(formatR)
+# format my ugly R code
+tidy_app()
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
